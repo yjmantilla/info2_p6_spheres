@@ -7,8 +7,9 @@
 #include <QString>
 #include <QList>
 #include <QGraphicsScene>
-#include <QRandomGenerator>
+//#include <QRandomGenerator>
 #include <QColor>
+#include <QTime>
 
 class System
 {

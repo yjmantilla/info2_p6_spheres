@@ -9,6 +9,7 @@ Wall::Wall(qreal x1, qreal y1, qreal x2, qreal y2, Qt::GlobalColor color)
 {
     this->setLine(x1,y1,x2,y2);
     this->setPen(QPen(color, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    this->setRestitution(1);
 }
 
 void Wall::setRestitution(qreal r)

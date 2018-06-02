@@ -14,6 +14,11 @@
 
 System::System(qreal timeStep, qreal startTime)
 {
+    /*Give seed ONCE to the RNG otherwise it will produce the same sequence where ever you call it*/
+    //see https://stackoverflow.com/questions/2767383/use-of-qsrand-random-method-that-is-not-random
+
+    QTime time = QTime::currentTime();
+    qsrand((uint)time.msec());
     this->field = new Field();
     this->scene = new QGraphicsScene();
     this->timeStep = timeStep;
@@ -211,23 +216,41 @@ void System::loadSystemFromFile(QString filename)
 
 qreal System::boundedRandomizer(int min, int max)
 {
-    return QRandomGenerator::global()->bounded(min,max + 1);
+    //return QRandomGenerator::global()->bounded(min,max + 1);
+
+    return qrand() % ((max + 1) - min) + min;
 }
 
 qreal System::signRandomizer()
 {
+
     int dummy;
 
-    while(1)
-    {
-        //remember the upper bound is exclusive
-        dummy = QRandomGenerator::global()->bounded(-1,2);
+//    while(1)
+//    {
+//        //remember the upper bound is exclusive
+//        dummy = QRandomGenerator::global()->bounded(-1,2);
 
-        if(dummy != 0){break;}
+//        if(dummy != 0){break;}
+//    }
+
+
+    // Random number between low and high
+    dummy = qrand() % ((1 + 2) - 1) + 1;
+    //qDebug()<<dummy;
+
+    if(dummy == 2)
+    {
+        return 1;
     }
 
-    //qDebug()<<dummy;
-    return dummy;
+    else
+    {
+        return -1;
+    }
+
+        //return dummy;
+
 }
 
 void System::addRandomSphere()
@@ -244,6 +267,9 @@ void System::addSphereAt(qreal px, qreal py)
 
 QColor System::randomColor()
 {
-    return QColor(this->boundedRandomizer(0,255),this->boundedRandomizer(0,255),this->boundedRandomizer(0,255));
+    qint32 R = this->boundedRandomizer(0,255);
+    qint32 G = this->boundedRandomizer(0,255);
+    qint32 B = this->boundedRandomizer(0,255);
+    return QColor(R,G,B);
 }
 
